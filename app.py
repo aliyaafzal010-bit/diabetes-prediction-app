@@ -6,30 +6,41 @@ import joblib
 model = joblib.load("diabetes_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
-# Page config
 st.set_page_config(
     page_title="Diabetes Prediction System",
     page_icon="🩺",
     layout="wide"
 )
 
-# ----------- FORCE LIGHT THEME -----------
+# ----------- PROFESSIONAL LIGHT CSS -----------
 st.markdown("""
 <style>
-/* Main background pure white */
+
+/* Main background white */
 [data-testid="stAppViewContainer"] {
     background-color: #ffffff;
+    color: #1a1a1a;
 }
 
 /* Sidebar light grey */
 [data-testid="stSidebar"] {
-    background-color: #f5f7fa;
+    background-color: #f0f2f6;
 }
 
-/* Title styling */
+/* Force all normal text dark */
+html, body, [class*="css"]  {
+    color: #1a1a1a !important;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Headings */
 h1 {
-    color: #1f4e79;
+    color: #0f172a;
     font-weight: 700;
+}
+
+h2, h3 {
+    color: #1e293b;
 }
 
 /* Button styling */
@@ -47,21 +58,21 @@ h1 {
     color: white;
 }
 
-/* Success & Error Box */
+/* Success & Error box */
 .result-success {
     background-color: #e6f4ea;
     padding: 15px;
     border-radius: 8px;
-    color: #1e7e34;
-    font-weight: bold;
+    color: #166534;
+    font-weight: 600;
 }
 
 .result-error {
     background-color: #fdecea;
     padding: 15px;
     border-radius: 8px;
-    color: #c82333;
-    font-weight: bold;
+    color: #991b1b;
+    font-weight: 600;
 }
 
 </style>
@@ -71,7 +82,7 @@ h1 {
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["Home", "Prediction", "About"])
 
-# ----------- HOME PAGE -----------
+# ----------- HOME -----------
 if page == "Home":
     st.title("🩺 Diabetes Prediction System")
 
@@ -81,17 +92,17 @@ if page == "Home":
     This web application uses a **Logistic Regression Machine Learning Model**
     to predict whether a person is likely to have diabetes.
 
-    The system analyzes medical parameters such as:
+    It analyzes important medical parameters such as:
     - Glucose Level
     - BMI
     - Blood Pressure
     - Insulin Level
     - Age
 
-    👉 Navigate to **Prediction** from the sidebar to test the model.
+    👉 Go to **Prediction** from the sidebar to test the model.
     """)
 
-# ----------- PREDICTION PAGE -----------
+# ----------- PREDICTION -----------
 elif page == "Prediction":
 
     st.title("🔍 Enter Patient Details")
@@ -121,7 +132,7 @@ elif page == "Prediction":
         else:
             st.markdown('<div class="result-success">The patient is likely Not Diabetic.</div>', unsafe_allow_html=True)
 
-# ----------- ABOUT PAGE -----------
+# ----------- ABOUT -----------
 elif page == "About":
 
     st.title("📘 About This Project")
@@ -130,13 +141,13 @@ elif page == "About":
     This project was developed as a **BTech AI/ML Mini Project**.
 
     ### Model Used:
-    - Logistic Regression
+    Logistic Regression
 
     ### Dataset:
-    - PIMA Indians Diabetes Dataset
+    PIMA Indians Diabetes Dataset
 
     ### Objective:
-    To build a machine learning model that can assist in early diabetes detection.
+    To build a machine learning model for early diabetes prediction.
 
     ### Developed By:
     Aliya Afzal
