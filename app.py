@@ -12,41 +12,52 @@ st.set_page_config(
     layout="wide"
 )
 
-# ----------- PROFESSIONAL LIGHT CSS -----------
+# -------- PROFESSIONAL LIGHT THEME CSS --------
 st.markdown("""
 <style>
 
-/* Main background white */
+/* Main background */
 [data-testid="stAppViewContainer"] {
     background-color: #ffffff;
-    color: #1a1a1a;
 }
 
-/* Sidebar light grey */
+/* Sidebar background */
 [data-testid="stSidebar"] {
-    background-color: #f0f2f6;
+    background-color: #f4f6f9;
 }
 
-/* Force all normal text dark */
-html, body, [class*="css"]  {
-    color: #1a1a1a !important;
+/* Sidebar text */
+[data-testid="stSidebar"] * {
+    color: #111827 !important;
+    font-weight: 500;
+}
+
+/* Main text color */
+html, body, p, label, div {
+    color: #111827 !important;
     font-family: 'Segoe UI', sans-serif;
 }
 
 /* Headings */
 h1 {
-    color: #0f172a;
+    color: #0f172a !important;
     font-weight: 700;
 }
 
 h2, h3 {
-    color: #1e293b;
+    color: #1f2937 !important;
 }
 
-/* Button styling */
+/* Input labels */
+label {
+    color: #111827 !important;
+    font-weight: 600 !important;
+}
+
+/* Buttons */
 .stButton>button {
     background-color: #2563eb;
-    color: white;
+    color: white !important;
     font-size: 16px;
     padding: 10px 24px;
     border-radius: 8px;
@@ -55,10 +66,10 @@ h2, h3 {
 
 .stButton>button:hover {
     background-color: #1e40af;
-    color: white;
+    color: white !important;
 }
 
-/* Success & Error box */
+/* Result boxes */
 .result-success {
     background-color: #e6f4ea;
     padding: 15px;
@@ -78,11 +89,11 @@ h2, h3 {
 </style>
 """, unsafe_allow_html=True)
 
-# ----------- SIDEBAR NAVIGATION -----------
+# -------- SIDEBAR NAVIGATION --------
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["Home", "Prediction", "About"])
 
-# ----------- HOME -----------
+# -------- HOME PAGE --------
 if page == "Home":
     st.title("🩺 Diabetes Prediction System")
 
@@ -92,7 +103,7 @@ if page == "Home":
     This web application uses a **Logistic Regression Machine Learning Model**
     to predict whether a person is likely to have diabetes.
 
-    It analyzes important medical parameters such as:
+    It analyzes medical parameters such as:
     - Glucose Level
     - BMI
     - Blood Pressure
@@ -102,7 +113,7 @@ if page == "Home":
     👉 Go to **Prediction** from the sidebar to test the model.
     """)
 
-# ----------- PREDICTION -----------
+# -------- PREDICTION PAGE --------
 elif page == "Prediction":
 
     st.title("🔍 Enter Patient Details")
@@ -132,7 +143,7 @@ elif page == "Prediction":
         else:
             st.markdown('<div class="result-success">The patient is likely Not Diabetic.</div>', unsafe_allow_html=True)
 
-# ----------- ABOUT -----------
+# -------- ABOUT PAGE --------
 elif page == "About":
 
     st.title("📘 About This Project")
