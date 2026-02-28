@@ -6,43 +6,40 @@ import joblib
 model = joblib.load("diabetes_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
-st.set_page_config(page_title="Diabetes Prediction App", page_icon="🩺", layout="centered")
+st.set_page_config(page_title="Diabetes Prediction System", page_icon="🩺", layout="centered")
 
-# Sidebar Navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Home", "About Project", "Prediction"])
+# Session state for navigation
+if "page" not in st.session_state:
+    st.session_state.page = "home"
 
 # ---------------- HOME PAGE ----------------
-if page == "Home":
-    st.markdown("<h1 style='text-align: center; color: #ff4b4b;'>Welcome to Diabetes Prediction System</h1>", unsafe_allow_html=True)
-    st.image("https://cdn-icons-png.flaticon.com/512/2966/2966489.png", width=150)
-    
-    st.write("""
-    This web application predicts whether a patient is likely to have diabetes.
-    
-    🔹 Built using Machine Learning  
-    🔹 Model Used: Logistic Regression  
-    🔹 Deployed using Streamlit Cloud  
+if st.session_state.page == "home":
+
+    st.markdown("""
+        <h1 style='text-align: center; color: #ff4b4b;'>🩺 Diabetes Prediction System</h1>
+        <h4 style='text-align: center;'>Early Detection Using Machine Learning</h4>
+        <br>
+    """, unsafe_allow_html=True)
+
+    st.image("https://cdn-icons-png.flaticon.com/512/3774/3774299.png", width=200)
+
+    st.markdown("""
+    This application predicts whether a patient is likely to have diabetes  
+    based on medical parameters using a Logistic Regression model.
+
+    🔹 Model Accuracy: 77.6%  
+    🔹 Algorithm: Logistic Regression  
+    🔹 Deployment: Streamlit Cloud  
     """)
-    
-    st.info("Use the sidebar to navigate to the Prediction page.")
 
-# ---------------- ABOUT PAGE ----------------
-elif page == "About Project":
-    st.title("About This Project")
-    st.write("""
-    This project was developed as part of a BTech AI/ML training project.
+    st.markdown("<br>", unsafe_allow_html=True)
 
-    📊 Dataset: PIMA Indian Diabetes Dataset  
-    🤖 Model: Logistic Regression  
-    🎯 Accuracy: 77.6%  
-    ⚙ Deployment: Streamlit Cloud  
-
-    The model predicts diabetes based on medical parameters such as glucose level, BMI, age, etc.
-    """)
+    if st.button("🚀 Start Prediction", use_container_width=True):
+        st.session_state.page = "prediction"
 
 # ---------------- PREDICTION PAGE ----------------
-elif page == "Prediction":
+elif st.session_state.page == "prediction":
+
     st.title("Enter Patient Details")
 
     col1, col2 = st.columns(2)
@@ -59,6 +56,8 @@ elif page == "Prediction":
         dpf = st.number_input("Diabetes Pedigree Function", min_value=0.0)
         age = st.number_input("Age", min_value=0)
 
+    st.markdown("<br>", unsafe_allow_html=True)
+
     if st.button("Predict", use_container_width=True):
 
         input_data = np.array([[preg, glucose, bp, skin, insulin, bmi, dpf, age]])
@@ -69,5 +68,10 @@ elif page == "Prediction":
             st.error("⚠ High Risk: The patient is likely Diabetic.")
         else:
             st.success("✅ Low Risk: The patient is likely Not Diabetic.")
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    if st.button("⬅ Back to Home"):
+        st.session_state.page = "home"
 
     st.caption("Developed by Aliya Afzal | BTech AI Project")
