@@ -2,45 +2,98 @@ import streamlit as st
 import numpy as np
 import joblib
 
-# Load model and scaler
+# Load model
 model = joblib.load("diabetes_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
-st.set_page_config(page_title="Diabetes Prediction System", page_icon="🩺", layout="centered")
+# Page config
+st.set_page_config(page_title="Diabetes Prediction System", page_icon="🩺", layout="wide")
 
-# Session state for navigation
-if "page" not in st.session_state:
-    st.session_state.page = "home"
+# ----------- CUSTOM CSS (Professional Light Theme) -----------
+st.markdown("""
+<style>
 
-# ---------------- HOME PAGE ----------------
-if st.session_state.page == "home":
+body {
+    background-color: #f4f6f9;
+}
 
-    st.markdown("""
-        <h1 style='text-align: center; color: #ff4b4b;'>🩺 Diabetes Prediction System</h1>
-        <h4 style='text-align: center;'>Early Detection Using Machine Learning</h4>
-        <br>
-    """, unsafe_allow_html=True)
+.main {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+}
 
-    st.image("https://cdn-icons-png.flaticon.com/512/3774/3774299.png", width=200)
+h1 {
+    color: #1f4e79;
+    text-align: center;
+    font-weight: 700;
+}
 
-    st.markdown("""
-    This application predicts whether a patient is likely to have diabetes  
-    based on medical parameters using a Logistic Regression model.
+h2, h3 {
+    color: #2e6da4;
+}
 
-    🔹 Model Accuracy: 77.6%  
-    🔹 Algorithm: Logistic Regression  
-    🔹 Deployment: Streamlit Cloud  
+.stButton>button {
+    background-color: #1f77b4;
+    color: white;
+    font-size: 16px;
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: none;
+}
+
+.stButton>button:hover {
+    background-color: #125a8a;
+    color: white;
+}
+
+.result-success {
+    background-color: #e6f4ea;
+    padding: 15px;
+    border-radius: 8px;
+    color: #1e7e34;
+    font-weight: bold;
+}
+
+.result-error {
+    background-color: #fdecea;
+    padding: 15px;
+    border-radius: 8px;
+    color: #c82333;
+    font-weight: bold;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# ----------- SIDEBAR NAVIGATION -----------
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Go to", ["Home", "Prediction"])
+
+# ----------- HOME PAGE -----------
+if page == "Home":
+    st.title("🩺 Diabetes Prediction System")
+
+    st.write("""
+    ### Welcome 👋
+
+    This web application uses **Machine Learning (Logistic Regression)**  
+    to predict whether a person is likely to have diabetes.
+
+    It analyzes medical parameters such as:
+    - Glucose Level
+    - BMI
+    - Blood Pressure
+    - Age
+    - Insulin Level
+
+    Click on **Prediction** in the sidebar to start.
     """)
 
-    st.markdown("<br>", unsafe_allow_html=True)
+# ----------- PREDICTION PAGE -----------
+if page == "Prediction":
 
-    if st.button("🚀 Start Prediction", use_container_width=True):
-        st.session_state.page = "prediction"
-
-# ---------------- PREDICTION PAGE ----------------
-elif st.session_state.page == "prediction":
-
-    st.title("Enter Patient Details")
+    st.title("🔍 Enter Patient Details")
 
     col1, col2 = st.columns(2)
 
@@ -56,22 +109,16 @@ elif st.session_state.page == "prediction":
         dpf = st.number_input("Diabetes Pedigree Function", min_value=0.0)
         age = st.number_input("Age", min_value=0)
 
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    if st.button("Predict", use_container_width=True):
+    if st.button("Predict Result"):
 
         input_data = np.array([[preg, glucose, bp, skin, insulin, bmi, dpf, age]])
         input_scaled = scaler.transform(input_data)
         prediction = model.predict(input_scaled)
 
         if prediction[0] == 1:
-            st.error("⚠ High Risk: The patient is likely Diabetic.")
+            st.markdown('<div class="result-error">The patient is likely Diabetic.</div>', unsafe_allow_html=True)
         else:
-            st.success("✅ Low Risk: The patient is likely Not Diabetic.")
+            st.markdown('<div class="result-success">The patient is likely Not Diabetic.</div>', unsafe_allow_html=True)
 
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    if st.button("⬅ Back to Home"):
-        st.session_state.page = "home"
-
+    st.markdown("---")
     st.caption("Developed by Aliya Afzal | BTech AI Project")
