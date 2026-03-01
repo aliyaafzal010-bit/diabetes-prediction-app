@@ -2,66 +2,54 @@ import streamlit as st
 import numpy as np
 import joblib
 
-# Load model
+# Load model and scaler
 model = joblib.load("diabetes_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
 st.set_page_config(
-    page_title="Diabetes Prediction System",
+    page_title="Diabetes Prediction App",
     page_icon="🩺",
-    layout="wide"
+    layout="centered"
 )
 
-# -------- PROFESSIONAL LIGHT THEME CSS --------
+# ----------- LIGHT PROFESSIONAL THEME -----------
 st.markdown("""
 <style>
 
 /* Main background */
 [data-testid="stAppViewContainer"] {
-    background-color: #ffffff;
+    background-color: #f9fafc;
 }
 
-/* Sidebar background */
+/* Sidebar */
 [data-testid="stSidebar"] {
-    background-color: #f4f6f9;
+    background-color: #eef2f7;
 }
 
-/* Sidebar text */
 [data-testid="stSidebar"] * {
-    color: #111827 !important;
+    color: #1f2937 !important;
     font-weight: 500;
 }
 
-/* Main text color */
-html, body, p, label, div {
+/* Main text */
+html, body, p, label {
     color: #111827 !important;
     font-family: 'Segoe UI', sans-serif;
 }
 
 /* Headings */
-h1 {
-    color: #0f172a !important;
+h1, h2, h3 {
+    color: #1e3a8a !important;
     font-weight: 700;
 }
 
-h2, h3 {
-    color: #1f2937 !important;
-}
-
-/* Input labels */
-label {
-    color: #111827 !important;
-    font-weight: 600 !important;
-}
-
-/* Buttons */
+/* Button */
 .stButton>button {
     background-color: #2563eb;
     color: white !important;
-    font-size: 16px;
-    padding: 10px 24px;
     border-radius: 8px;
-    border: none;
+    padding: 8px 20px;
+    font-size: 15px;
 }
 
 .stButton>button:hover {
@@ -69,54 +57,31 @@ label {
     color: white !important;
 }
 
-/* Result boxes */
-.result-success {
-    background-color: #e6f4ea;
-    padding: 15px;
-    border-radius: 8px;
-    color: #166534;
-    font-weight: 600;
-}
-
-.result-error {
-    background-color: #fdecea;
-    padding: 15px;
-    border-radius: 8px;
-    color: #991b1b;
-    font-weight: 600;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
-# -------- SIDEBAR NAVIGATION --------
+# -------- Sidebar Navigation (UPDATED ORDER) --------
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["Home", "Prediction", "About"])
 
-# -------- HOME PAGE --------
+# ---------------- HOME PAGE ----------------
 if page == "Home":
-    st.title("🩺 Diabetes Prediction System")
+    st.markdown("<h1 style='text-align: center;'>Welcome to Diabetes Prediction System</h1>", unsafe_allow_html=True)
+    st.image("https://cdn-icons-png.flaticon.com/512/2966/2966489.png", width=120)
 
     st.write("""
-    ### Welcome 👋
+    This web application predicts whether a patient is likely to have diabetes.
 
-    This web application uses a **Logistic Regression Machine Learning Model**
-    to predict whether a person is likely to have diabetes.
-
-    It analyzes medical parameters such as:
-    - Glucose Level
-    - BMI
-    - Blood Pressure
-    - Insulin Level
-    - Age
-
-    👉 Go to **Prediction** from the sidebar to test the model.
+    🔹 Built using Machine Learning  
+    🔹 Model Used: Logistic Regression  
+    🔹 Deployed using Streamlit Cloud  
     """)
 
-# -------- PREDICTION PAGE --------
-elif page == "Prediction":
+    st.info("Use the sidebar to navigate to the Prediction page.")
 
-    st.title("🔍 Enter Patient Details")
+# ---------------- PREDICTION PAGE ----------------
+elif page == "Prediction":
+    st.title("Enter Patient Details")
 
     col1, col2 = st.columns(2)
 
@@ -132,37 +97,30 @@ elif page == "Prediction":
         dpf = st.number_input("Diabetes Pedigree Function", min_value=0.0)
         age = st.number_input("Age", min_value=0)
 
-    if st.button("Predict Result"):
+    if st.button("Predict", use_container_width=True):
 
         input_data = np.array([[preg, glucose, bp, skin, insulin, bmi, dpf, age]])
         input_scaled = scaler.transform(input_data)
         prediction = model.predict(input_scaled)
 
         if prediction[0] == 1:
-            st.markdown('<div class="result-error">The patient is likely Diabetic.</div>', unsafe_allow_html=True)
+            st.error("⚠ High Risk: The patient is likely Diabetic.")
         else:
-            st.markdown('<div class="result-success">The patient is likely Not Diabetic.</div>', unsafe_allow_html=True)
+            st.success("✅ Low Risk: The patient is likely Not Diabetic.")
 
-# -------- ABOUT PAGE --------
+    st.caption("Developed by Aliya Afzal | BTech AI Project")
+
+# ---------------- ABOUT PAGE ----------------
 elif page == "About":
-
-    st.title("📘 About This Project")
+    st.title("About This Project")
 
     st.write("""
-    This project was developed as a **BTech AI/ML Mini Project**.
+    This project was developed as part of a BTech AI/ML training project.
 
-    ### Model Used:
-    Logistic Regression
+    📊 Dataset: PIMA Indian Diabetes Dataset  
+    🤖 Model: Logistic Regression  
+    🎯 Accuracy: 77.6%  
+    ⚙ Deployment: Streamlit Cloud  
 
-    ### Dataset:
-    PIMA Indians Diabetes Dataset
-
-    ### Objective:
-    To build a machine learning model for early diabetes prediction.
-
-    ### Developed By:
-    Aliya Afzal
+    The model predicts diabetes based on medical parameters such as glucose level, BMI, age, etc.
     """)
-
-    st.markdown("---")
-    st.caption("Diabetes Prediction System | 2026")
