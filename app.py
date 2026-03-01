@@ -6,87 +6,42 @@ import joblib
 model = joblib.load("diabetes_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
-st.set_page_config(
-    page_title="Diabetes Prediction App",
-    page_icon="🩺",
-    layout="centered"
-)
+st.set_page_config(page_title="Diabetes Prediction App", page_icon="🩺", layout="centered")
 
-# ----------- LIGHT PROFESSIONAL THEME -----------
-st.markdown("""
-<style>
-[data-testid="stAppViewContainer"] {
-    background-color: #f9fafc;
-}
-
-[data-testid="stSidebar"] {
-    background-color: #eef2f7;
-}
-
-[data-testid="stSidebar"] * {
-    color: #1f2937 !important;
-    font-weight: 500;
-}
-
-html, body, p, label {
-    color: #111827 !important;
-    font-family: 'Segoe UI', sans-serif;
-}
-
-h1, h2, h3 {
-    color: #1e3a8a !important;
-    font-weight: 700;
-}
-
-.stButton>button {
-    background-color: #2563eb;
-    color: white !important;
-    border-radius: 8px;
-    padding: 8px 20px;
-    font-size: 15px;
-}
-
-.stButton>button:hover {
-    background-color: #1e40af;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# -------- Sidebar Navigation --------
+# ---------------- SIDEBAR ----------------
 st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["Home", "Prediction"])
 
 st.sidebar.markdown("---")
 
-# -------- Permanent About Section in Sidebar --------
+# Permanent About Section in Sidebar
 st.sidebar.subheader("About Project")
-
 st.sidebar.write("""
 📊 Dataset: PIMA Indian Diabetes Dataset  
-
 🤖 Model: Logistic Regression  
-
 🎯 Accuracy: 77.6%  
-
 ⚙ Deployment: Streamlit Cloud  
-
 👩‍💻 Developed by: Aliya Afzal
 """)
 
 # ---------------- HOME PAGE ----------------
 if page == "Home":
-    st.markdown("<h1 style='text-align: center;'>Welcome to Diabetes Prediction System</h1>", unsafe_allow_html=True)
-    st.image("https://cdn-icons-png.flaticon.com/512/2966/2966489.png", width=120)
+    st.markdown(
+        "<h1 style='text-align: center; color: #1e3a8a;'>Welcome to Diabetes Prediction System</h1>",
+        unsafe_allow_html=True
+    )
+
+    st.image("https://cdn-icons-png.flaticon.com/512/2966/2966489.png", width=150)
 
     st.write("""
     This web application predicts whether a patient is likely to have diabetes.
-
+    
     🔹 Built using Machine Learning  
     🔹 Model Used: Logistic Regression  
     🔹 Deployed using Streamlit Cloud  
     """)
 
-    st.info("Use the sidebar to navigate to Prediction page.")
+    st.info("Use the sidebar to navigate to the Prediction page.")
 
 # ---------------- PREDICTION PAGE ----------------
 elif page == "Prediction":
@@ -113,8 +68,8 @@ elif page == "Prediction":
         prediction = model.predict(input_scaled)
 
         if prediction[0] == 1:
-            st.error("⚠ High Risk: The patient is likely Diabetic.")
+            st.error("⚠ High Risk: The patient is Diabetic.")
         else:
-            st.success("✅ Low Risk: The patient is likely Not Diabetic.")
+            st.success("✅ Low Risk: The patient is Not Diabetic.")
 
-    st.caption("Developed by Aliya Afzal | BTech AI Project")
+    st.caption("Developed by streanmlit | BTech AI Project")
