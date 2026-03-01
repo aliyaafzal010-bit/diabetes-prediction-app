@@ -15,13 +15,10 @@ st.set_page_config(
 # ----------- LIGHT PROFESSIONAL THEME -----------
 st.markdown("""
 <style>
-
-/* Main background */
 [data-testid="stAppViewContainer"] {
     background-color: #f9fafc;
 }
 
-/* Sidebar */
 [data-testid="stSidebar"] {
     background-color: #eef2f7;
 }
@@ -31,19 +28,16 @@ st.markdown("""
     font-weight: 500;
 }
 
-/* Main text */
 html, body, p, label {
     color: #111827 !important;
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* Headings */
 h1, h2, h3 {
     color: #1e3a8a !important;
     font-weight: 700;
 }
 
-/* Button */
 .stButton>button {
     background-color: #2563eb;
     color: white !important;
@@ -54,15 +48,30 @@ h1, h2, h3 {
 
 .stButton>button:hover {
     background-color: #1e40af;
-    color: white !important;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
-# -------- Sidebar Navigation (UPDATED ORDER) --------
+# -------- Sidebar Navigation --------
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Home", "Prediction", "About"])
+page = st.sidebar.radio("Go to", ["Home", "Prediction"])
+
+st.sidebar.markdown("---")
+
+# -------- Permanent About Section in Sidebar --------
+st.sidebar.subheader("About Project")
+
+st.sidebar.write("""
+📊 Dataset: PIMA Indian Diabetes Dataset  
+
+🤖 Model: Logistic Regression  
+
+🎯 Accuracy: 77.6%  
+
+⚙ Deployment: Streamlit Cloud  
+
+👩‍💻 Developed by: Aliya Afzal
+""")
 
 # ---------------- HOME PAGE ----------------
 if page == "Home":
@@ -77,7 +86,7 @@ if page == "Home":
     🔹 Deployed using Streamlit Cloud  
     """)
 
-    st.info("Use the sidebar to navigate to the Prediction page.")
+    st.info("Use the sidebar to navigate to Prediction page.")
 
 # ---------------- PREDICTION PAGE ----------------
 elif page == "Prediction":
@@ -109,18 +118,3 @@ elif page == "Prediction":
             st.success("✅ Low Risk: The patient is likely Not Diabetic.")
 
     st.caption("Developed by Aliya Afzal | BTech AI Project")
-
-# ---------------- ABOUT PAGE ----------------
-elif page == "About":
-    st.title("About This Project")
-
-    st.write("""
-    This project was developed as part of a BTech AI/ML training project.
-
-    📊 Dataset: PIMA Indian Diabetes Dataset  
-    🤖 Model: Logistic Regression  
-    🎯 Accuracy: 77.6%  
-    ⚙ Deployment: Streamlit Cloud  
-
-    The model predicts diabetes based on medical parameters such as glucose level, BMI, age, etc.
-    """)
